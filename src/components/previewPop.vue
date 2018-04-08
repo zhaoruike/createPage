@@ -9,7 +9,7 @@
            </tr>
            <tr v-for="val in $store.state.leadList">
              <td>
-               <a :href="'//localhost:8000/'+val+'.html'" v-text="val" target="_blank"></a>
+               <a :href="'//'+window.location.host+'/'+val+'.html'" v-text="val" target="_blank"></a>
              </td>
            </tr>
          </table>
@@ -29,14 +29,15 @@
           width: '200px',
           height: '300px'
         },
-        pageName: ''
+        pageName: '',
+        window:''
       }
     },
 
-    create () {
+    create () {    
     },
     mounted () {
-
+      this.window = window
     },
     props: {
       type: {
@@ -46,26 +47,6 @@
     methods: {
       leadChangeType(msg){
         this.$emit('changeType', msg)
-      },
-      toLeadPage(val){
-        var self = this
-        axios.post('/drag/tolead/item', {
-          pageName: val
-        }).then(function (res) {
-          if (res.data.code == 200) {
-            self.leadChangeType(false)
-            self.$store.state.pageName = res.data.data.pageName
-            self.$store.state.data = JSON.parse(res.data.data.data)
-          }
-          self.$alert(res.data.msg, '提示', {
-            confirmButtonText: '确定',
-            callback: function () {
-            }
-          })
-        }).catch(function (err) {
-          console.log(err)
-        })
-
       }
     },
     directives: {},

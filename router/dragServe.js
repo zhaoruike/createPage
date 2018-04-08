@@ -1,7 +1,7 @@
 ﻿let express = require('express');
 let router = express.Router();
 let fs = require('fs')
-let config = require('../config.js')
+let config = require('../serveConfig.js')
 let codeData = {
     success: { code: 200, msg: '创建成功' },
     publishSuccess: { code: 200, msg: '创建成功' },
