@@ -1,0 +1,19 @@
+html, body {
+    height: 100%;
+}
+
+* {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    cursor: default;
+}
+
+.select-ele {
+    border: 1px solid red;
+}
+
+.property-item-active{
+    background: #333333;
+    color: white;
+}
