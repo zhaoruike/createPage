@@ -9,7 +9,7 @@
            </tr>
            <tr v-for="val in $store.state.leadList">
              <td>
-               <a :href="'//'+window.location.host+'/'+val+'.html'" v-text="val" target="_blank"></a>
+               <a :href="'//serve.createpage.top/'+val+'.html'" v-text="val" target="_blank"></a>
              </td>
            </tr>
          </table>

@@ -81,18 +81,22 @@
       },
       publish(){
         var self = this
-        axios.post('/drag/publish', {
+        axios.post('http://180.76.54.188/drag/publish', {
           pageName: self.$store.state.pageName,
           html: document.getElementsByClassName('stage')[0].innerHTML,
           data: JSON.stringify(self.$store.state.data)
         }).then(function (res) {
-          console.log(res)
+          self.$alert('res.data.msg', '提示', {
+            confirmButtonText: '确定',
+            callback: function () {
+            }
+          });
         }).catch(function (err) {
         })
       },
       preview(){
         var self = this
-        axios.post('/drag/tolead/list', {}).then(function (res) {
+        axios.post('http://180.76.54.188/drag/tolead/list', {}).then(function (res) {
           self.previewType = true
           self.$store.state.leadList = res.data.data
         }).catch(function (err) {
@@ -105,7 +109,7 @@
       },
       toLead(){
         var self = this
-        axios.post('/drag/tolead/list', {}).then(function (res) {
+        axios.post('http://180.76.54.188/drag/tolead/list', {}).then(function (res) {
           self.leadType = true
           self.$store.state.leadList = res.data.data
         }).catch(function (err) {
@@ -127,11 +131,12 @@
     background: black;
     width: 100%;
     z-index: 1000;
+    font-family:'微软雅黑';
   }
 
   .tools-list {
     position: absolute;
-    line-height: 1;
+    line-height: 1.5;
     top: 50%;
     transform: translateY(-50%);
     right: 0;

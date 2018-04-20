@@ -1,14 +1,14 @@
 <template>
   <div v-drag :id="'base'+baseData.id" :style="baseData.style" :index="index" :class="baseData.selectType.single||baseData.selectType.multiple?'select-ele':''">
     <slot name="append"></slot>
-    <move-shape :direction="'down'" :parent="parent" :parentStyle="baseData.style"></move-shape>
-    <move-shape :direction="'right'" :parent="parent" :parentStyle="baseData.style"></move-shape>
-    <move-shape :direction="'up'" :parent="parent" :parentStyle="baseData.style"></move-shape>
-    <move-shape :direction="'left'" :parent="parent" :parentStyle="baseData.style"></move-shape>
-    <move-shape :direction="'n-w'" :parent="parent" :parentStyle="baseData.style"></move-shape>
-    <move-shape :direction="'n-e'" :parent="parent" :parentStyle="baseData.style"></move-shape>
-    <move-shape :direction="'s-w'" :parent="parent" :parentStyle="baseData.style"></move-shape>
-    <move-shape :direction="'s-e'" :parent="parent" :parentStyle="baseData.style"></move-shape>
+    <move-shape :direction="'down'" :parent="parent" :parentStyle="baseData.style" v-if="select"></move-shape>
+    <move-shape :direction="'right'" :parent="parent" :parentStyle="baseData.style" v-if="select"></move-shape>
+    <move-shape :direction="'up'" :parent="parent" :parentStyle="baseData.style" v-if="select"></move-shape>
+    <move-shape :direction="'left'" :parent="parent" :parentStyle="baseData.style" v-if="select"></move-shape>
+    <move-shape :direction="'n-w'" :parent="parent" :parentStyle="baseData.style" v-if="select"></move-shape>
+    <move-shape :direction="'n-e'" :parent="parent" :parentStyle="baseData.style" v-if="select"></move-shape>
+    <move-shape :direction="'s-w'" :parent="parent" :parentStyle="baseData.style" v-if="select"></move-shape>
+    <move-shape :direction="'s-e'" :parent="parent" :parentStyle="baseData.style" v-if="select"></move-shape>
   </div>
 </template>
 
@@ -49,64 +49,73 @@
         default(){
           return {
             styleObj: {},
-            selectType: true
+            selectType: {}
           }
         }
       },
       index: {
         default: 0
+      },
+      select:{
+        default:true
       }
     },
     methods: {
       mousedown (e) {
         var self = this
         //处理多选拖动与单个拖动判断
-        for (let attr in self.$store.state.data) {
-          if (self.$store.state.data.hasOwnProperty(attr)) {
-            if (self.$store.state.data[attr].length) {
-              self.$store.state.data[attr].forEach(function (item, index) {
-                item.selectType.single = false
-              })
+        //判断是否参加多选
+        if(!self.select){
+          for (let attr in self.$store.state.data) {
+            if (self.$store.state.data.hasOwnProperty(attr)) {
+              if (self.$store.state.data[attr].length) {
+                self.$store.state.data[attr].forEach(function (item, index) {
+                  item.selectType.single = false
+                })
+              }
             }
           }
-        }
-        let pushMark = 0
-        this.$store.state.ctrlMoveList.forEach(function (item, index) {
-          if (item.data.type == self.baseData.type) {
-            if (item.index == self.index) {
-              pushMark += (index + 1)
+          let pushMark = 0
+          this.$store.state.ctrlMoveList.forEach(function (item, index) {
+            if (item.data.type == self.baseData.type) {
+              if (item.index == self.index) {
+                pushMark += (index + 1)
+              }
             }
-          }
-        })
-        if (e.ctrlKey && e.button == 0) {
-          if (!pushMark) {
-            self.baseData.selectType.multiple = true
-            self.baseData.selectType.single = false
-            this.$store.state.ctrlMoveList.push({data: self.baseData, index: self.index})
+          })
+          if (e.ctrlKey && e.button == 0) {
+            if (!pushMark) {
+              self.baseData.selectType.multiple = true
+              self.baseData.selectType.single = false
+              this.$store.state.ctrlMoveList.push({data: self.baseData, index: self.index})
+            } else {
+              self.baseData.selectType.multiple = false
+              self.baseData.selectType.single = false
+              this.$store.state.ctrlMoveList.splice((pushMark - 1), 1)
+            }
           } else {
-            self.baseData.selectType.multiple = false
-            self.baseData.selectType.single = false
-            this.$store.state.ctrlMoveList.splice((pushMark - 1), 1)
+            if (!pushMark) {
+              this.$store.state.ctrlMoveList.forEach(function (item, index) {
+                item.data.selectType.multiple = false
+                item.data.selectType.single = false
+              })
+              this.$store.state.ctrlMoveList.splice(0, this.$store.state.ctrlMoveList.length)
+            }
+            self.baseData.selectType.single = true
           }
-        } else {
-          if (!pushMark) {
-            this.$store.state.ctrlMoveList.forEach(function (item, index) {
-              item.data.selectType.multiple = false
-              item.data.selectType.single = false
-            })
-            this.$store.state.ctrlMoveList.splice(0, this.$store.state.ctrlMoveList.length)
-          }
-          self.baseData.selectType.single = true
         }
+        
         //点击保存初始状态
         this.startX = e.clientX
         this.startY = e.clientY
         this.offsetX = this.ele.offsetLeft
         this.offsetY = this.ele.offsetTop
-        this.$store.state.ctrlMoveList.forEach(function (item, index) {
-          item.data.startX = parseInt(item.data.style.left)
-          item.data.startY = parseInt(item.data.style.top)
-        })
+        if(!self.select){
+          this.$store.state.ctrlMoveList.forEach(function (item, index) {
+            item.data.startX = parseInt(item.data.style.left)
+            item.data.startY = parseInt(item.data.style.top)
+          })
+        }
         switch (this.parent) {
           case 'body':
             this.parentW = document.getElementsByTagName('body')[0].clientWidth
@@ -151,20 +160,24 @@
           topMark += 1
         }
         //多选拖动
-        this.$store.state.ctrlMoveList.forEach(function (item, index) {
-          moveMark = true
-          if (item.data.type == self.baseData.type) {
-            if (item.index == self.index) {
-              moveMark = false
+        //判断是否参加多选
+        if(!self.select){
+          this.$store.state.ctrlMoveList.forEach(function (item, index) {
+            moveMark = true
+            if (item.data.type == self.baseData.type) {
+              if (item.index == self.index) {
+                moveMark = false
+              }
             }
-          }
-          if (!leftMark && moveMark) {
-            item.data.style.left = (item.data.startX + self.moveX) + 'px'
-          }
-          if (!topMark && moveMark) {
-            item.data.style.top = (item.data.startY + self.moveY) + 'px'
-          }
-        })
+            if (!leftMark && moveMark) {
+              item.data.style.left = (item.data.startX + self.moveX) + 'px'
+            }
+            if (!topMark && moveMark) {
+              item.data.style.top = (item.data.startY + self.moveY) + 'px'
+            }
+          })
+        }
+        
       },
       mouseup (e) {
         var self = this
@@ -188,21 +201,5 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-  h1, h2 {
-    font-weight: normal;
-  }
-
-  ul {
-    list-style-type: none;
-    padding: 0;
-  }
-
-  li {
-    display: inline-block;
-    margin: 0 10px;
-  }
-
-  a {
-    color: #42b983;
-  }
+  
 </style>

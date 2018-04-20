@@ -3,6 +3,7 @@
     <div class="stage">
       <img-ele v-for="(val,index) in $store.state.data.imageList" :data="val" :key="'image'+index" :index="index"></img-ele>
       <text-ele v-for="(val,index) in $store.state.data.textList" :data="val" :key="'text'+index" :index="index"></text-ele>
+      <self-input :data="inputData"></self-input>
     </div>
   </div>
 </template>
@@ -10,10 +11,15 @@
 <script>
   import imgEle from './imgEle.vue'
   import textEle from './textEle.vue'
+  import selfInput from './selfInput.vue'
   export default {
     name: 'stage',
     data () {
-      return {}
+      return {
+        inputData:{
+          type:"select"
+        }
+      }
     },
 
     create () {
@@ -26,7 +32,7 @@
     },
     methods: {},
     directives: {},
-    components: {imgEle, textEle}
+    components: {imgEle, textEle,selfInput}
   }
 </script>
 

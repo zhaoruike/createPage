@@ -14,6 +14,7 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
+    "babel-polyfill": "^6.26.0",
     "body-parser": "^1.18.2",
     "cookie-parser": "^1.4.3",
     "cross-env": "^5.1.4",
@@ -21,6 +22,7 @@
     "express": "^4.16.3",
     "express-session": "^1.15.6",
     "http-proxy-middleware": "^0.18.0",
+    "promise-polyfill": "^7.1.2",
     "vue": "^2.5.2",
     "vue-router": "^3.0.1",
     "vuex": "^3.0.1"

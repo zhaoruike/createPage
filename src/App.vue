@@ -4,6 +4,7 @@
     <components-parent></components-parent>
     <stage></stage>
     <ele-operate></ele-operate>
+    <palette></palette>
   </div>
 </template>
 
@@ -14,12 +15,17 @@
   import componentsParent from './components/componentsParent.vue'
   import tools from './components/tools.vue'
   import eleOperate from './components/eleOperate.vue'
+  import palette from './components/palette.vue'
   export default {
     name: 'App',
     data(){
       return {}
     },
-    components: {imgEle, componentsParent, tools, stage, eleOperate}
+    created(){
+      //禁止右键
+      document.oncontextmenu=new Function("event.returnValue=false");
+    },
+    components: {imgEle, componentsParent, tools, stage, eleOperate,palette}
   }
 
 </script>
