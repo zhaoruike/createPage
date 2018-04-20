@@ -16,7 +16,7 @@
       return {}
     },
 
-    create () {
+    created () {
     },
     mounted () {
 

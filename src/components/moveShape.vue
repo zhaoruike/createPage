@@ -33,7 +33,7 @@
         limitY: 0
       }
     },
-    create () {
+    created () {
 
     },
     props: {

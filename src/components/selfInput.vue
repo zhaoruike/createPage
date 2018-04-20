@@ -1,14 +1,16 @@
 <template>  
     <div class="self-input-box">
-    	<input :type="data.type" v-if="data.type!=='textarea'&&data.type!=='select'">
+    	<input :type="data.type" v-if="data.type!=='textarea'&&data.type!=='select'&&data.type!=='color'">
 			<textarea-input v-if="data.type=='textarea'"></textarea-input>
 			<select-input v-if="data.type=='select'"></select-input>
+      <color-input v-if="data.type == 'color'" :data="data"></color-input>
     </div>
 </template>
 
 <script>
   import textareaInput from './input/textareaInput.vue'
   import selectInput from './input/selectInput.vue'
+  import colorInput from './input/colorInput.vue'
   export default {
     name: 'selfInput',
     data () {
@@ -16,7 +18,7 @@
        
       }
     },
-    create () {
+    created () {
     },
     mounted () {
       
@@ -51,7 +53,7 @@
       },
     },
     directives: {},
-    components: {textareaInput,selectInput}
+    components: {textareaInput,selectInput,colorInput}
   }
 </script>
 

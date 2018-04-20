@@ -21,7 +21,7 @@
         selectName:''
       }
     },
-    create () {
+    created () {
     },
     mounted () {
         var self = this
@@ -74,7 +74,8 @@
       checkValue(val){
         this.selectValue = val.value
         this.selectName = val.name
-         this.listType = false
+        this.listType = false
+        this.data.def = this.selectValue
       },
       changeProType(type, e){
         e.stopPropagation()

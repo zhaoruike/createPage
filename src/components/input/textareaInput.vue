@@ -11,7 +11,7 @@
        showText:''
       }
     },
-    create () {
+    created () {
     },
     mounted () {
       if(this.data.data){

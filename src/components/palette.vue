@@ -1,12 +1,12 @@
 <template>
   <base-shape :index="index" :baseData="data" :parent="'body'" :select="false">
     <div slot="append" class="outer-palette" v-parent>
-      <div class="title"><span>色板</span><span>×</span></div>
+      <div class="title"><span>色板</span><span @click="closeColor">×</span></div>
 			<div class="select-color-box">
-        <ul @click="allColorsSelect($event)">
+        <ul >
           <li v-for="val in commonColors" ><span :style="{backgroundColor:'rgb('+val+')'}"></span></li>
         </ul>
-        <ul>
+        <ul @click="allColorsSelect($event)">
           <li v-for="val in allColors" :style="{background:'linear-gradient(to right,rgb('+val.from+'),rgb('+val.to+'))'}"></li>
         </ul>
         <ul v-dragY>
@@ -20,11 +20,12 @@
               <div v-for="(val,key,index) in rgba"><span v-text="key"></span><input type="number" max="255" v-model="rgba[key]"></div>
             </div>
           </div>
-          <div class="a-adjust">
+          <div class="a-adjust" v-dragX>
             <span :style="spanXstyle"></span>
           </div>
         </div>
 			</div>
+      <div @click="subColors" class="sub-btn"><button>确定</button></div>
     </div>
   </base-shape>
 </template>
@@ -95,6 +96,8 @@
       for(let i=0;i<255;i++){
         this.alternateColors.push('0,0,'+i)
       }
+
+      this.$store.state.selectColor = this.rgba
     },
     mounted () {
       
@@ -106,7 +109,7 @@
             id:'palette',
             style: {
               width: '600px',	
-              height: '320px',
+              height: '330px',
               top: '100px',
               left: '100px',
               position: 'absolute',
@@ -126,22 +129,35 @@
       }
     },
     methods: {
+      subColors(){
+        let rgba = this.rgba
+        this.$store.state.selectColor = rgba.r+','+rgba.g+','+rgba.b+','+rgba.a
+        this.$store.state.selectColorType = false       
+      },
+      closeColor(){
+        this.$store.state.selectColorType = false
+        for(let i=0;i<this.$store.state.colorInputTypeList.length-1;i++){
+          this.$store.state.colorInputTypeList[i] = false
+        } 
+      },
       allColorsSelect(e){
         let parent = this.parent.parentNode
-        let pTop = parent.offsetY;
-        let pLeft = parent.offsetX;
+        let pTop = parent.offsetTop;
+        let pLeft = parent.offsetLeft;
         let mouseX = e.clientX;
         let mouseY = e.clientY;
-        let rgb = (mouseY-31)+','+(mouseX-235)+',0'
+        this.rgba.r = mouseY - pTop - 31;
+        this.rgba.g = mouseX - pLeft - 235
       }, 
-      mousedown (e) {
+      mousedown (dir,e) {
          e.stopPropagation();
         var self = this
         //点击保存初始状态
+        self.direction = dir
         this.startY = e.clientY
         this.startX = e.clientX
         this.offsetY = parseInt(this.spanStyle.top)
-        this.offsetX = parseInt(this.spanStyle.left)
+        this.offsetX = parseInt(this.spanXstyle.left)
         //绑定移动和鼠标up事件
         document.addEventListener('mousemove', self.mousemove)
         document.addEventListener('mouseup', self.mouseup)
@@ -151,13 +167,28 @@
         var self = this
         this.moveY = e.clientY - this.startY
         this.moveX = e.clientX - this.startX
-        this.spanStyle.top = (this.offsetY+this.moveY)+'px'
-        if(256 - parseInt(this.spanStyle.top) < 8){
-          this.spanStyle.top = '248px'
-        }  
-        if(parseInt(this.spanStyle.top) < -8){
-          this.spanStyle.top = '-8px'
-        }    
+        if(self.direction == 'Y'){
+          this.spanStyle.top = (this.offsetY+this.moveY)+'px'
+          if(256 - parseInt(this.spanStyle.top) < 8){
+            this.spanStyle.top = '248px'
+          }  
+          if(parseInt(this.spanStyle.top) < -8){
+            this.spanStyle.top = '-8px'
+          }
+          this.rgba.b = parseInt(this.spanStyle.top)+8
+        }
+
+        if(self.direction == 'X'){
+          this.spanXstyle.left = (this.offsetX+this.moveX)+'px'
+          if(100 - parseInt(this.spanXstyle.left) < 8){
+            this.spanXstyle.left = '92px'
+          }  
+          if(parseInt(this.spanXstyle.top) < -8){
+            this.spanXstyle.left = '-8px'
+          }
+          this.rgba.a = parseInt(this.spanXstyle.left)+8
+        }
+            
       },
       mouseup (e) {
         e.stopPropagation();
@@ -171,25 +202,19 @@
       dragY: {
         bind: function (el, binding, vnode) {
           var self = vnode.context
-          self.ele = el;
-          self.direction = 'Y'
-          self.ele.addEventListener('mousedown', self.mousedown)
+          el.addEventListener('mousedown', self.mousedown.bind(self,"Y"))
         }
       },
       dragX: {
         bind: function (el, binding, vnode) {
           var self = vnode.context
-          self.ele = el;
-          self.direction = 'X'
-          self.ele.addEventListener('mousedown', self.mousedown)
+          el.addEventListener('mousedown', self.mousedown.bind(self,"X"))
         }
       },
       dragXY: {
         bind: function (el, binding, vnode) {
           var self = vnode.context
-          self.ele = el;
-          self.direction = 'XY'
-          self.ele.addEventListener('mousedown', self.mousedown)
+          el.addEventListener('mousedown', self.mousedown.bind(self,"XY"))
         }
       },
       parent:{
@@ -225,10 +250,16 @@
 	}
 
   .select-color-box{
-    overflow:visible;
-    padding:0 5px;
-    position:absolute
+    overflow:hidden;
+    padding:8px 5px;
+    position:relative;
   }
+
+  .select-color-box:after{
+    content:"";
+    display:blcok;
+    clear:both
+    }
 
   .select-color-box > ul{
     float:left
@@ -332,5 +363,9 @@
     width:16px;
     border-radius:50%;
     background:rgba(255,105,105,0.7)
+  }
+
+  .sub-btn{
+    text-align:center
   }
 </style>

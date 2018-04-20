@@ -4,7 +4,7 @@
     <components-parent></components-parent>
     <stage></stage>
     <ele-operate></ele-operate>
-    <palette></palette>
+    <palette v-show="$store.state.selectColorType"></palette>
   </div>
 </template>
 

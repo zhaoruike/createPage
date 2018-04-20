@@ -36,7 +36,7 @@
       }
     },
 
-    create () {
+    created () {
     },
     mounted () {
 
@@ -65,7 +65,7 @@
         var self = this
         //处理多选拖动与单个拖动判断
         //判断是否参加多选
-        if(!self.select){
+        if(self.select){
           for (let attr in self.$store.state.data) {
             if (self.$store.state.data.hasOwnProperty(attr)) {
               if (self.$store.state.data[attr].length) {
@@ -110,7 +110,7 @@
         this.startY = e.clientY
         this.offsetX = this.ele.offsetLeft
         this.offsetY = this.ele.offsetTop
-        if(!self.select){
+        if(self.select){
           this.$store.state.ctrlMoveList.forEach(function (item, index) {
             item.data.startX = parseInt(item.data.style.left)
             item.data.startY = parseInt(item.data.style.top)
@@ -161,7 +161,7 @@
         }
         //多选拖动
         //判断是否参加多选
-        if(!self.select){
+        if(self.select){
           this.$store.state.ctrlMoveList.forEach(function (item, index) {
             moveMark = true
             if (item.data.type == self.baseData.type) {

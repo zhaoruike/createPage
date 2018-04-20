@@ -15,6 +15,10 @@ Vue.use(Vuex)
 
 Vue.config.productionTip = false
 var state = {
+  colorIntputId:0,
+  colorInputTypeList:[],
+  selectColorType:false,
+  selectColor:"0,0,0,0",
   pageName: '',
   ctrlMoveList: [],
   leadList: [],

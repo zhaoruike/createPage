@@ -18,7 +18,7 @@
       }
     },
 
-    create () {
+    created () {
     },
     mounted () {
 

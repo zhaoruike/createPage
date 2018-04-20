@@ -34,7 +34,7 @@
       }
     },
 
-    create () {    
+    created () {    
     },
     mounted () {
       this.window = window
