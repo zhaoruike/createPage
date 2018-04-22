@@ -3,8 +3,7 @@
     <div class="stage">
       <img-ele v-for="(val,index) in $store.state.data.imageList" :data="val" :key="'image'+index" :index="index"></img-ele>
       <text-ele v-for="(val,index) in $store.state.data.textList" :data="val" :key="'text'+index" :index="index"></text-ele>
-      <self-input :data="inputData"></self-input>
-      <self-input :data="inputData"></self-input>
+      <self-input :data="inputData"></self-input>    
     </div>
   </div>
 </template>
@@ -18,8 +17,7 @@
     data () {
       return {
         inputData:{
-          type:"color",
-          color:'0,0,0,1'
+          type:"date",
         }
       }
     },

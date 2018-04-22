@@ -1,9 +1,10 @@
 <template>  
     <div class="self-input-box">
-    	<input :type="data.type" v-if="data.type!=='textarea'&&data.type!=='select'&&data.type!=='color'">
+    	<input :type="data.type" v-if="data.type!=='textarea'&&data.type!=='select'&&data.type!=='color'&&data.type!=='date'">
 			<textarea-input v-if="data.type=='textarea'"></textarea-input>
 			<select-input v-if="data.type=='select'"></select-input>
       <color-input v-if="data.type == 'color'" :data="data"></color-input>
+      <date-input v-if="data.type == 'date'"></date-input>
     </div>
 </template>
 
@@ -11,6 +12,7 @@
   import textareaInput from './input/textareaInput.vue'
   import selectInput from './input/selectInput.vue'
   import colorInput from './input/colorInput.vue'
+  import dateInput from './input/dateInput.vue'
   export default {
     name: 'selfInput',
     data () {
@@ -53,7 +55,7 @@
       },
     },
     directives: {},
-    components: {textareaInput,selectInput,colorInput}
+    components: {textareaInput,selectInput,colorInput,dateInput}
   }
 </script>
 

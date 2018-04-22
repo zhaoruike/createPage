@@ -4,7 +4,7 @@
       <div class="title"><span>色板</span><span @click="closeColor">×</span></div>
 			<div class="select-color-box">
         <ul >
-          <li v-for="val in commonColors" ><span :style="{backgroundColor:'rgb('+val+')'}"></span></li>
+          <li v-for="val in commonColors" ><span :style="{backgroundColor:'rgb('+val+')'}" @click="checkCommonColors(val)"></span></li>
         </ul>
         <ul @click="allColorsSelect($event)">
           <li v-for="val in allColors" :style="{background:'linear-gradient(to right,rgb('+val.from+'),rgb('+val.to+'))'}"></li>
@@ -25,7 +25,7 @@
           </div>
         </div>
 			</div>
-      <div @click="subColors" class="sub-btn"><button>确定</button></div>
+      <div @click="subColors" class="sub-btn"><span>确定</span></div>
     </div>
   </base-shape>
 </template>
@@ -109,7 +109,7 @@
             id:'palette',
             style: {
               width: '600px',	
-              height: '330px',
+              height: '340px',
               top: '100px',
               left: '100px',
               position: 'absolute',
@@ -129,6 +129,13 @@
       }
     },
     methods: {
+      checkCommonColors (rgb){
+        var rgbList = rgb.split(',')
+        this.rgba.r = rgbList[0]
+        this.rgba.g = rgbList[1]
+        this.rgba.b = rgbList[2]
+        this.rgba.a = '1'
+      },
       subColors(){
         let rgba = this.rgba
         this.$store.state.selectColor = rgba.r+','+rgba.g+','+rgba.b+','+rgba.a
@@ -316,7 +323,7 @@
   .color-show-box{
     position:absolute;
     left:5px;
-    bottom:0px;
+    bottom:10px;
   }
 
   .color-show-box-top{
@@ -366,6 +373,15 @@
   }
 
   .sub-btn{
-    text-align:center
+    text-align:center;
+    margin-top:10px;
+  }
+
+  .sub-btn > span{
+    padding:5px 10px;
+    line-height:1;
+    background:#42b983;
+    border-radius:4px;
+    color:white
   }
 </style>

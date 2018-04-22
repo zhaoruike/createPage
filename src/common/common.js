@@ -26,6 +26,7 @@ let common = {
     // time: new Date(),或者时间戳
     // formDate('yy-MM-dd hh:mm:ss',new Date())
     var date = new Date()
+    debugger
     date.setTime(time)
     var obj = {
       'M+': date.getMonth() + 1,
