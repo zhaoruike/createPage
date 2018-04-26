@@ -1,10 +1,10 @@
 <template>  
-    <div class="self-input-box">
-    	<input :type="data.type" v-if="data.type!=='textarea'&&data.type!=='select'&&data.type!=='color'&&data.type!=='date'">
-			<textarea-input v-if="data.type=='textarea'"></textarea-input>
-			<select-input v-if="data.type=='select'"></select-input>
+    <div class="self-input-box" >
+    	<input :type="data.type" v-if="data.type!=='textarea'&&data.type!=='select'&&data.type!=='color'&&data.type!=='date'" v-model="data.value">
+			<textarea-input v-if="data.type=='textarea'" :data="data" :styleObj="styleObj"></textarea-input>
+			<select-input v-if="data.type=='select'" :data="data"></select-input>
       <color-input v-if="data.type == 'color'" :data="data"></color-input>
-      <date-input v-if="data.type == 'date'"></date-input>
+      <date-input v-if="data.type == 'date'" :data="data"></date-input>
     </div>
 </template>
 
@@ -62,6 +62,8 @@
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
   .self-input-box{
-      display:inline-block
+      display:inline-block;
+      min-width:150px;
+      box-sizing:border-box;
   }
 </style>

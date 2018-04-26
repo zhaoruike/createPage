@@ -1,14 +1,14 @@
 <template>
-  <div v-drag :id="'base'+baseData.id" :style="baseData.style" :index="index" :class="baseData.selectType.single||baseData.selectType.multiple?'select-ele':''">
+  <div v-drag :id="'base'+baseData.id" :style="baseData.style" :index="index" :class="baseData.selectType.single||baseData.selectType.multiple?'select-ele':''" class="base-shape">
     <slot name="append"></slot>
-    <move-shape :direction="'down'" :parent="parent" :parentStyle="baseData.style" v-if="select"></move-shape>
-    <move-shape :direction="'right'" :parent="parent" :parentStyle="baseData.style" v-if="select"></move-shape>
-    <move-shape :direction="'up'" :parent="parent" :parentStyle="baseData.style" v-if="select"></move-shape>
-    <move-shape :direction="'left'" :parent="parent" :parentStyle="baseData.style" v-if="select"></move-shape>
-    <move-shape :direction="'n-w'" :parent="parent" :parentStyle="baseData.style" v-if="select"></move-shape>
-    <move-shape :direction="'n-e'" :parent="parent" :parentStyle="baseData.style" v-if="select"></move-shape>
-    <move-shape :direction="'s-w'" :parent="parent" :parentStyle="baseData.style" v-if="select"></move-shape>
-    <move-shape :direction="'s-e'" :parent="parent" :parentStyle="baseData.style" v-if="select"></move-shape>
+    <move-shape :direction="'down'" :parent="parent" :parentData="baseData" v-if="select" :select="select"></move-shape>
+    <move-shape :direction="'right'" :parent="parent" :parentData="baseData" v-if="select" :select="select"></move-shape>
+    <move-shape :direction="'up'" :parent="parent" :parentData="baseData" v-if="select" :select="select"></move-shape>
+    <move-shape :direction="'left'" :parent="parent" :parentData="baseData" v-if="select" :select="select"></move-shape>
+    <move-shape :direction="'n-w'" :parent="parent" :parentData="baseData" v-if="select" :select="select"></move-shape>
+    <move-shape :direction="'n-e'" :parent="parent" :parentData="baseData" v-if="select" :select="select"></move-shape>
+    <move-shape :direction="'s-w'" :parent="parent" :parentData="baseData" v-if="select" :select="select"></move-shape>
+    <move-shape :direction="'s-e'" :parent="parent" :parentData="baseData" v-if="select" :select="select"></move-shape>
   </div>
 </template>
 
@@ -65,7 +65,7 @@
         var self = this
         //处理多选拖动与单个拖动判断
         //判断是否参加多选
-        if(self.select){
+        if(self.select == 2){
           for (let attr in self.$store.state.data) {
             if (self.$store.state.data.hasOwnProperty(attr)) {
               if (self.$store.state.data[attr].length) {
@@ -110,7 +110,7 @@
         this.startY = e.clientY
         this.offsetX = this.ele.offsetLeft
         this.offsetY = this.ele.offsetTop
-        if(self.select){
+        if(self.select == 2){
           this.$store.state.ctrlMoveList.forEach(function (item, index) {
             item.data.startX = parseInt(item.data.style.left)
             item.data.startY = parseInt(item.data.style.top)
@@ -159,9 +159,14 @@
           this.baseData.style.top = (this.parentH - this.ele.clientHeight) + 'px'
           topMark += 1
         }
+        if(self.select == 2){
+          this.baseData.attribute.style.left.value = this.baseData.style.left
+          this.baseData.attribute.style.top.value = this.baseData.style.top
+        }
+
         //多选拖动
         //判断是否参加多选
-        if(self.select){
+        if(self.select == 2){
           this.$store.state.ctrlMoveList.forEach(function (item, index) {
             moveMark = true
             if (item.data.type == self.baseData.type) {
@@ -175,6 +180,8 @@
             if (!topMark && moveMark) {
               item.data.style.top = (item.data.startY + self.moveY) + 'px'
             }
+            item.data.attribute.style.left.value = item.data.style.left
+            item.data.attribute.style.top.value = item.data.style.top
           })
         }
         
@@ -201,5 +208,7 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-  
+  .base-shape{
+    position:absolute
+  }
 </style>

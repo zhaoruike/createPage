@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app" :onselectstart="$store.state.noSelect">
     <tools></tools>
     <components-parent></components-parent>
     <stage></stage>

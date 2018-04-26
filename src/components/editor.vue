@@ -1,6 +1,9 @@
 <template>
     <div class="editor-box">
-      <div :style="styleObj" class="textarea-box" contenteditable="true" @keyup="monito($event)"  @click="getFocus" v-text="showText" @input="formate($event)">
+      <div class="editor-tools">
+        <edit-btn></edit-btn>
+      </div>
+      <div :style="styleObj" class="textarea-box" contenteditable="true" @keyup="monito($event)"  @click="getFocus" v-text="showText">
         
       </div>
     </div>  
@@ -8,19 +11,19 @@
 </template>
 
 <script>
+	import editBtn from './editorComponents/editBtn.vue'
   export default {
-    name: 'textareaInput',
+    name: 'editor',
     data () {
       return {
-       showText:''
+				showText:''
       }
     },
     created () {
     },
     mounted () {
-      console.log(this.data)
-      if(this.data.textarea){
-        this.showText = this.data.textarea
+      if(this.data.data){
+        this.showText = this.data.data
         this.styleObj.color = "#000"
       }else{
         this.showText = this.data.tip
@@ -34,8 +37,7 @@
         default(){
           return{
             tip:'请输入文字...',
-            value:'',
-            textarea:''
+            data:''
           }
         }
       },
@@ -47,34 +49,22 @@
             color:'black',
             fontSize:'14px',
             border:'1px solid black',
-            minHeight:'25px',
+            minHeight:'25px'
           }
         }
       }
     },
     methods: {
-      formatText(val){
-        let newStr = val.replace(/\n/g, '_@').replace(/\r/g, '_#')
-        newStr = newStr.replace(/_@/g, '<br/>')
-        newStr = newStr.replace(/\s/g, '&nbsp;')
-        return newStr
-      },
-      formate(e){
-        let text = e.target.innerText  
-        this.data.textarea = text
-        this.data.value = this.formatText(this.data.textarea)
-      },
       fontBlod(){
         // document.execCommand('Bold','false')
       },
       getFocus(){
-        this.showText = this.data.textarea
+        this.showText = this.data.data
         this.styleObj.color = "#000"
       },
       monito(event) {
         let obj = event.target
-        this.data.textarea = obj.innerText
-        event.stopPropagation();
+        this.data.data = obj.innerText
         if (window.getSelection) {//ie11 10 9 ff safari
           obj.focus(); //解决ff不获取焦点无法定位问题
           var range = window.getSelection();//创建range
@@ -90,7 +80,7 @@
 }
     },
     directives: {},
-    components: {}
+    components: {editBtn}
   }
 </script>
 

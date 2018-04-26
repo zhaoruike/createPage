@@ -43,11 +43,14 @@
       parent: {
         default: 'body'
       },
-      parentStyle:{
+      parentData:{
         default(){
            return {}
         }
-      }
+      },
+      select:{
+        default:2
+      },
     },
     watch: {},
     methods: {
@@ -81,60 +84,102 @@
         switch (self.direction) {
           case 'down':
             if (self.parentH + self.moveY + self.parentY <= self.limitY) {
-              self.parentStyle.height = self.parentH + self.moveY + 'px'
+              self.parentData.style.height = self.parentH + self.moveY + 'px'
+              if(self.select == 2){
+                self.parentData.attribute.style.height.value = self.parentH + self.moveY + 'px'
+              }
             }
             break;
           case 'up':
             if (0 - self.moveY <= self.parentY) {
-              self.parentStyle.height = self.parentH - self.moveY + 'px'
-              self.parentStyle.top = self.parentY + self.moveY + 'px'
+              self.parentData.style.height = self.parentH - self.moveY + 'px'             
+              self.parentData.style.top = self.parentY + self.moveY + 'px'
+              if(self.select == 2){
+                self.parentData.attribute.style.height.value = self.parentH - self.moveY + 'px'
+                self.parentData.attribute.style.top.value = self.parentY + self.moveY + 'px'
+              }             
             }
             break;
           case 'left':
             if (0 - self.moveX <= self.parentX) {
-              self.parentStyle.width = self.parentW - self.moveX + 'px'
-              self.parentStyle.left = self.parentX + self.moveX + 'px'
+              self.parentData.style.width = self.parentW - self.moveX + 'px' 
+              self.parentData.style.left = self.parentX + self.moveX + 'px'
+              if(self.select == 2){
+              self.parentData.attribute.style.width.value = self.parentW - self.moveX + 'px'
+              self.parentData.attribute.style.left.value = self.parentX + self.moveX + 'px'
+              }
             }
             break;
           case 'right':
             if (self.parentW + self.moveX + self.parentX <= self.limitX){
-              self.parentStyle.width = self.parentW + self.moveX + 'px'
+              self.parentData.style.width = self.parentW + self.moveX + 'px'
+              if(self.select == 2){
+              self.parentData.attribute.style.width.value = self.parentW + self.moveX + 'px'
+              }
             }
             break;
           case 'n-w':
             if (0 - self.moveY <= self.parentY) {
-              self.parentStyle.height = self.parentH - self.moveY + 'px'
-              self.parentStyle.top = self.parentY + self.moveY + 'px'
+              self.parentData.style.height = self.parentH - self.moveY + 'px'
+              self.parentData.style.top = self.parentY + self.moveY + 'px'
+              if(self.select == 2){
+              self.parentData.attribute.style.height.value = self.parentH - self.moveY + 'px'
+              self.parentData.attribute.style.top.value = self.parentY + self.moveY + 'px'
+              }
             }
             if (0 - self.moveX <= self.parentX) {
-              self.parentStyle.width = self.parentW - self.moveX + 'px'
-              self.parentStyle.left = self.parentX + self.moveX + 'px'
+              self.parentData.style.width = self.parentW - self.moveX + 'px'
+              self.parentData.style.left = self.parentX + self.moveX + 'px'
+              if(self.select == 2){
+              self.parentData.attribute.style.width.value = self.parentW - self.moveX + 'px'
+              self.parentData.attribute.style.left.value = self.parentX + self.moveX + 'px'
+              }
             }
             break;
           case 'n-e':
             if (0 - self.moveY <= self.parentY) {
-              self.parentStyle.height = self.parentH - self.moveY + 'px'
-              self.parentStyle.top = self.parentY + self.moveY + 'px'
+              self.parentData.style.height = self.parentH - self.moveY + 'px'
+              self.parentData.style.top = self.parentY + self.moveY + 'px'
+              if(self.select == 2){
+              self.parentData.attribute.style.height.value = self.parentH - self.moveY + 'px'
+              self.parentData.attribute.style.top.value = self.parentY + self.moveY + 'px'
+              }
             }
             if (self.parentW + self.moveX + self.parentX <= self.limitX){
-              self.parentStyle.width = self.parentW + self.moveX + 'px'
+              self.parentData.style.width = self.parentW + self.moveX + 'px'
+              if(self.select == 2){
+              self.parentData.attribute.style.width.value = self.parentW + self.moveX + 'px'
+              }
             }
             break;
           case 's-w':
             if (self.parentH + self.moveY + self.parentY <= self.limitY) {
-              self.parentStyle.height = self.parentH + self.moveY + 'px'
+               self.parentData.style.height = self.parentH + self.moveY + 'px'
+               if(self.select == 2){
+                self.parentData.attribute.style.height.value = self.parentH + self.moveY + 'px'
+               }
             }
             if (0 - self.moveX <= self.parentX) {
-              self.parentStyle.width = self.parentW - self.moveX + 'px'
-              self.parentStyle.left = self.parentX + self.moveX + 'px'
+             self.parentData.style.width = self.parentW - self.moveX + 'px'
+              self.parentData.style.left = self.parentX + self.moveX + 'px'
+              if(self.select == 2){
+              self.parentData.attribute.style.width.value = self.parentW - self.moveX + 'px'
+              self.parentData.attribute.style.left.value = self.parentX + self.moveX + 'px'
+              }
             }
             break;
           case 's-e':
             if (self.parentH + self.moveY + self.parentY <= self.limitY) {
-              self.parentStyle.height = self.parentH + self.moveY + 'px'
+              self.parentData.style.height = self.parentH + self.moveY + 'px'
+              if(self.select == 2){
+              self.parentData.attribute.style.height.value = self.parentH + self.moveY + 'px'
+              }
             }
             if (self.parentW + self.moveX + self.parentX <= self.limitX){
-              self.parentStyle.width = self.parentW + self.moveX + 'px'
+              self.parentData.style.width = self.parentW + self.moveX + 'px'
+              if(self.select == 2){
+              self.parentData.attribute.style.width.value = self.parentW + self.moveX + 'px'
+              }
             }
             break;
         }

@@ -16,16 +16,16 @@
 		  this.color = this.$store.state.selectColor
 			this.$store.state.colorInputTypeList.push(false)
 			this.id = this.$store.state.colorInputTypeList.length-1
-			console.log(this.$store.state.colorInputTypeList)
     },
     mounted () {
       
     },
     watch:{
 			'$store.state.selectColor':function(val){
+        console.log(this.data)
 				if(this.$store.state.colorInputTypeList[this.id]){
-					this.data.color = val
-					this.styleObj.background = 'rgba('+this.data.color+')'									
+					this.data.value = 'rgba('+val+')'
+					this.styleObj.background = this.data.value									
 				}
 				for(let i=0;i<this.$store.state.colorInputTypeList.length-1;i++){
           this.$store.state.colorInputTypeList[i] = false
@@ -36,7 +36,7 @@
       data: {
         default: function () {
           return {
-            color:'0,0,0,0'
+            value:'rgba(255,0,0,1)'
           }
         }
       },
@@ -45,7 +45,7 @@
               return {
               height:'25px',
               width:'150px',
-              background:'rgba('+this.data.color+')'
+              background:this.data.value
               }
             }
       }

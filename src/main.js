@@ -15,10 +15,12 @@ Vue.use(Vuex)
 
 Vue.config.productionTip = false
 var state = {
-  colorIntputId:0,
-  colorInputTypeList:[],
-  selectColorType:false,
-  selectColor:"0,0,0,0",
+  pageStyle: { height: '500px' },
+  noSelect: "",
+  colorIntputId: 0,
+  colorInputTypeList: [],
+  selectColorType: false,
+  selectColor: "0,0,0,0",
   pageName: '',
   ctrlMoveList: [],
   leadList: [],
@@ -38,18 +40,18 @@ var state = {
         position: 'absolute',
         zIndex: 0
       },
-      selectType: {single: false, multiple: false},
+      selectType: { single: false, multiple: false },
       type: 'image',
-      address: 'http://img2.imgtn.bdimg.com/it/u=1864927332,825035894&fm=214&gp=0.jpg',
+      address: 'http://cp.itolddriver.com/images/def.jpg',
       attribute: {
         style: {
           width: {
-            value: '316px',
+            value: '300px',
             type: 'text',
             visible: true
           },
           height: {
-            value: '132px',
+            value: '100px',
             type: 'text',
             visible: true
           },
@@ -77,7 +79,7 @@ var state = {
         },
         content: {
           address: {
-            value: 'http://img2.imgtn.bdimg.com/it/u=1864927332,825035894&fm=214&gp=0.jpg',
+            value: 'http://cp.itolddriver.com/images/def.jpg',
             type: 'text',
             visible: true
           },
@@ -98,9 +100,11 @@ var state = {
         top: '0px',
         left: '0px',
         position: 'absolute',
-        lineHeight: 1.5
+        lineHeight: 1.5,
+        color: 'rgba(0,0,0,1)',
+        fontFamily: '微软雅黑'
       },
-      selectType: {single: false, multiple: false},
+      selectType: { single: false, multiple: false },
       type: 'text',
       content: '请输入文字',
       attribute: {
@@ -135,13 +139,27 @@ var state = {
             type: 'text',
             visible: false
           },
+          color: {
+            value: 'rgba(0,0,0,1)',
+            type: 'color',
+            visible: true
+          },
+          fontFamily: {
+            value: '微软雅黑',
+            type: 'select',
+            visible: true,
+            list:[{value:1,name:'微软雅黑'},{value:2,name:'楷体'},{value:3,name:'宋体'}],
+            def:1
+          },
           active: true,
         },
         content: {
           content: {
-            value: '请输入文字',
-            type: 'text',
-            visible: true
+            tip:'请输入文字',
+            value: '',
+            type: 'textarea',
+            visible: true,
+            textarea:''
           },
           active: false,
         }
@@ -177,6 +195,6 @@ new Vue({
   el: '#app',
   store: storeObj,
   router,
-  components: {App},
+  components: { App },
   template: '<App/>'
 })

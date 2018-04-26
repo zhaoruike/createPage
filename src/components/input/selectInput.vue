@@ -4,7 +4,7 @@
       <div class="show-box" v-text="selectName" @click="showList"></div>
       <transition name="data-list">
         <ul v-show="listType" class="select-list">
-            <li v-for="val in data.list" v-text="val.name" @click="checkValue(val)"></li>
+            <li v-for="(value,key,index) in data.list" v-text="value.name" @click="checkValue(value)"></li>
         </ul>
       </transition>
     </div>
@@ -26,20 +26,21 @@
     mounted () {
         var self = this
         this.selectValue = this.data.def
-        this.data.list.forEach(function(item,index){
-            if(item.value == self.data.def){
-                self.selectName = item.name
-            }
-        })
+        for(let attr in self.data.list){
+          if(self.data.list[attr].value == self.data.def){
+            self.selectName = self.data.list[attr].name
+          }
+        }
     },
     watch:{
         data () {
-           this.selectValue = this.data.def
-           this.data.list.forEach(function(item,index){
-               if(item.value == this.data.def){
-                   this.selectName = item.name
-               }
-           })
+          var self = this
+          this.selectValue = this.data.def
+          for(let attr in self.data.list){
+            if(self.data.list[attr].value == self.data.def){
+              self.selectName = self.data.list[attr].name
+            }
+          }
         }
     },
     props: {
@@ -76,6 +77,7 @@
         this.selectName = val.name
         this.listType = false
         this.data.def = this.selectValue
+        this.data.value = this.selectName
       },
       changeProType(type, e){
         e.stopPropagation()
@@ -118,7 +120,11 @@
 <style scoped>
   .select-outer-box{
       min-height:14px;
-      position:relative
+      position:relative;
+      color:black;
+      border:1px solid black;
+      font-size:14px;
+      line-height:14px;
   }
   .select-outer-box:after{
       position:absolute;

@@ -132,11 +132,12 @@
     width: 100%;
     z-index: 1000;
     font-family:'微软雅黑';
+    
   }
 
   .tools-list {
     position: absolute;
-    line-height: 1.5;
+    line-height:14px;
     top: 50%;
     transform: translateY(-50%);
     right: 0;

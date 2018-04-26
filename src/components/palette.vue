@@ -1,5 +1,5 @@
 <template>
-  <base-shape :index="index" :baseData="data" :parent="'body'" :select="false">
+  <base-shape :index="index" :baseData="data" :parent="'body'" :select="0">
     <div slot="append" class="outer-palette" v-parent>
       <div class="title"><span>色板</span><span @click="closeColor">×</span></div>
 			<div class="select-color-box">
