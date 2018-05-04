@@ -1,7 +1,7 @@
 ﻿let express = require('express');
 let router = express.Router();
 let fs = require('fs')
-let config = require('../serveConfig.js')
+let config = require('../config.js')
 let codeData = {
     success: { code: 200, msg: '创建成功' },
     publishSuccess: { code: 200, msg: '创建成功' },
@@ -11,8 +11,12 @@ let codeData = {
 }
 
 // 该路由使用的中间件
-router.use(function timeLog(req, res, next) {
-    console.log('Time: ', Date.now());
+router.use(function resetHead(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "X-Requested-With");
+    res.header("Access-Control-Allow-Methods","PUT,POST,GET,DELETE,OPTIONS");
+    res.header("X-Powered-By",' 3.2.1')
+    res.header("Content-Type", "application/json;charset=utf-8");
     next();
 });
 // 定义网站主页的路由

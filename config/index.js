@@ -16,6 +16,16 @@ module.exports = {
         changeOrigin: true,
         pathRewrite: {'^/drag': '/drag'}
       },
+      '/file': {
+        target: "http://localhost:8000",
+        changeOrigin: true,
+        pathRewrite: {'^/file': '/file'}
+      },
+      '/login': {
+        target: "http://localhost:8000",
+        changeOrigin: true,
+        pathRewrite: {'^/login': '/login'}
+      },
     },
 
     // Various Dev Server settings

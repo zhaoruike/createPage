@@ -49,7 +49,7 @@
       },
       toLeadPage(val){
         var self = this
-        axios.post('http://180.76.54.188/drag/tolead/item', {
+        axios.post('/drag/tolead/item', {
           pageName: val
         }).then(function (res) {
           if (res.data.code == 200) {

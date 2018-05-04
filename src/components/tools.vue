@@ -3,6 +3,8 @@
     <create-new-page-pop :type="type" @changeType="changeType"></create-new-page-pop>
     <to-lead-page-pop :type="leadType" @changeType="leadChangeType"></to-lead-page-pop>
     <preview-pop :type="previewType" @changeType="previewChangeType"></preview-pop>
+    <router-link to="loginpage" class="to-login" v-if="!$store.state.loginType">登陆</router-link>
+    <router-link to="userinfo"><div class="head-img" v-if="$store.state.loginType"><img :src="$store.state.userInfo.headImg"  :style="headImgStyle" @load="fitImg($event)" class="img-inner"></div></router-link>
     <ul class="tools-list">
       <li v-for="val in toolsBtn" v-text="val.name" @click="val.click"></li>
     </ul>
@@ -16,6 +18,7 @@
 </template>
 
 <script>
+  import {common} from '../common/common.js'
   import axios from 'axios'
   import createNewPagePop from './createNewPagePop.vue'
   import toLeadPagePop from './toLeadPagePop.vue'
@@ -24,6 +27,10 @@
     name: 'imgEle',
     data () {
       return {
+        headImgStyle:{
+          width:'',
+          height:''
+        },
         type: false,
         leadType: false,
         previewType: false,
@@ -46,6 +53,16 @@
       data: {}
     },
     methods: {
+      fitImg(e){
+        let img = e.path[0]
+        let offsetW = img.offsetWidth
+        let offsetH = img.offsetHeight
+        if(offsetW > offsetH){
+          this.headImgStyle.width = "100%"
+        }else{
+          this.headImgStyle.height = "100%"
+        }
+      },
       changeType(msg){
         this.type = msg
       },
@@ -81,39 +98,66 @@
       },
       publish(){
         var self = this
-        axios.post('http://180.76.54.188/drag/publish', {
-          pageName: self.$store.state.pageName,
-          html: document.getElementsByClassName('stage')[0].innerHTML,
-          data: JSON.stringify(self.$store.state.data)
-        }).then(function (res) {
-          self.$alert('res.data.msg', '提示', {
-            confirmButtonText: '确定',
-            callback: function () {
-            }
-          });
-        }).catch(function (err) {
+        common.checkToken().then((type)=>{
+           if(res.data.code == 200){
+            axios.post('/drag/publish', {
+            pageName: self.$store.state.pageName,
+            html: document.getElementsByClassName('stage')[0].innerHTML,
+            data: JSON.stringify(self.$store.state.data)
+            }).then(function (res) {
+            self.$alert(res.data.msg, '提示', {
+              confirmButtonText: '确定',
+              callback: function () {
+              }
+            });
+            }).catch(function (err) {
+            })
+          }else{
+            self.$router.push({path:'/loginpage'})
+          }
         })
       },
       preview(){
         var self = this
-        axios.post('http://180.76.54.188/drag/tolead/list', {}).then(function (res) {
-          self.previewType = true
-          self.$store.state.leadList = res.data.data
-        }).catch(function (err) {
+        common.checkToken().then((res)=>{
+          if(res.data.code == 200){
+            axios.post('/drag/tolead/list', {}).then(function (res) {
+            self.previewType = true
+            self.$store.state.leadList = res.data.data
+            }).catch(function (err) {
+            })
+          }else{
+            self.$router.push({path:'/loginpage'})
+          }
         })
+        
       },
       save(){
       },
       newPage(){
-        this.type = true
+        let self = this
+        common.checkToken().then((res)=>{
+          if(res.data.code == 200){
+            self.type = true
+          }else{
+            self.$router.push({path:'/loginpage'})
+          }
+        })
       },
       toLead(){
         var self = this
-        axios.post('http://180.76.54.188/drag/tolead/list', {}).then(function (res) {
-          self.leadType = true
-          self.$store.state.leadList = res.data.data
-        }).catch(function (err) {
+        common.checkToken().then((res)=>{
+          if(res.data.code == 200){
+             axios.post('/drag/tolead/list', {}).then(function (res) {
+              self.leadType = true
+              self.$store.state.leadList = res.data.data
+              }).catch(function (err) {
+              })
+          }else{
+            self.$router.push({path:'/loginpage'})
+          }
         })
+       
       }
     },
     directives: {},
@@ -148,7 +192,7 @@
     line-height: 1;
     top: 50%;
     transform: translateY(-50%);
-    left: 0;
+    left: 50px;
   }
 
   .tools-list > li {
@@ -170,5 +214,33 @@
     padding: 5px 3px;
     margin-right: 4px;
     font-size: 12px;
+  }
+  .to-login{
+    position:absolute;
+    line-height:50px;
+    padding-left:10px;
+    font-size:14px;
+    color:green;
+    transition:all 0.2s
+  }
+
+  .head-img{
+    position:absolute;
+    height:40px;
+    width:40px;
+    font-size:0px;
+    top:5px;
+    left:5px;
+    border-radius:50%;
+    overflow:hidden
+  }
+  .img-inner{
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%)
+  }
+  .to-login:hover{
+    transform:scale(1.2)
   }
 </style>

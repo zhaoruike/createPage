@@ -5,7 +5,6 @@
         <div slot="append" style="position:relative;width:100%;height:100%">
           <img-ele v-for="(val,index) in $store.state.data.imageList" :data="val" :key="'image'+index" :index="index"></img-ele>
           <text-ele v-for="(val,index) in $store.state.data.textList" :data="val" :key="'text'+index" :index="index"></text-ele>
-          <image-clipping></image-clipping>
         </div>
       </scroll>
     </div>

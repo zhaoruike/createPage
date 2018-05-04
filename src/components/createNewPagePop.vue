@@ -61,7 +61,7 @@
           return
         }
 
-        axios.post('http://180.76.54.188/drag/newpage', {
+        axios.post('/drag/newpage', {
           pageName: self.pageName
         }).then(function (res) {
           if (res.data.code == 200) {

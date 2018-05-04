@@ -15,6 +15,10 @@ Vue.use(Vuex)
 
 Vue.config.productionTip = false
 var state = {
+  loginType:false,
+  userInfo:{
+    headImg:''
+  },
   pageStyle: { height: '500px' },
   noSelect: "",
   colorIntputId: 0,

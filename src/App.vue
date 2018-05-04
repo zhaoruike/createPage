@@ -1,21 +1,10 @@
 <template>
   <div id="app" :onselectstart="$store.state.noSelect">
-    <tools></tools>
-    <components-parent></components-parent>
-    <stage></stage>
-    <ele-operate></ele-operate>
-    <palette v-show="$store.state.selectColorType"></palette>
+    <router-view></router-view>
   </div>
 </template>
 
 <script>
-  import './style/base.css'
-  import stage from './components/stage.vue'
-  import imgEle from './components/imgEle.vue'
-  import componentsParent from './components/componentsParent.vue'
-  import tools from './components/tools.vue'
-  import eleOperate from './components/eleOperate.vue'
-  import palette from './components/palette.vue'
   export default {
     name: 'App',
     data(){
@@ -25,15 +14,12 @@
       //禁止右键
       document.oncontextmenu=new Function("event.returnValue=false");
     },
-    components: {imgEle, componentsParent, tools, stage, eleOperate,palette}
+    components: {}
   }
 
 </script>
 
 <style scoped>
-  #app {
-    font-family: 'Avenir', Helvetica, Arial, sans-serif;
-    height: 100%;
-  }
+
 </style>
 

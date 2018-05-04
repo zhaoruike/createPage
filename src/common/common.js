@@ -1,7 +1,7 @@
 /**
  * Created by Administrator on 2018/3/30.
  */
-
+import axios from 'axios'
 let common = {
   assign(n, o) {
     if (typeof o == 'object') {
@@ -43,6 +43,9 @@ let common = {
       }
     }
     return fmt
+  },
+  checkToken(){
+    return axios.post('/login/check',{})
   }
 }
 

@@ -1,5 +1,5 @@
 <template>
-  <div :style="data.boxStyle" class="scroll-box" @mouseenter="enter" @mouseleave="leave">
+  <div :style="data.boxStyle" class="scroll-box" @mouseenter="enter" @mouseleave="leave" v-outer>
     <div class="content-box" :style="data.contentStyle">
       <slot name="append"></slot>
     </div>
@@ -25,7 +25,8 @@
         offsetY: 0,
         preW: 0,
         preH: 0,
-        preEle:null
+        preEle:null,
+        outerEle:null
       }
     },
     created () {
@@ -36,7 +37,7 @@
     },
     watch:{
       'data.contentStyle.height'(val){
-        this.update()
+        this.update(parseInt(val))
       }
     },
     props: {
@@ -56,10 +57,21 @@
       }
     },
     methods: {
-      update(){
+      update(height){
         this.preEle = this.ele.previousElementSibling
-        this.preH = this.preEle.clientHeight
-        this.barStyle.height = (parseInt(this.data.boxStyle.height) * parseInt(this.data.boxStyle.height) / this.preH)+"px"
+        if(height){
+          this.preH = height
+        }else{
+          this.preH = this.preEle.clientHeight
+        }
+        let outerH = this.outerEle.clientHeight
+        if(outerH < this.preH){
+          this.barStyle.visibility = 'visible'
+          this.barStyle.height = (parseInt(outerH) * parseInt(outerH) / this.preH)+"px"
+        }else{
+          this.barStyle.visibility = 'hidden'
+          this.barStyle.height = (parseInt(outerH) * parseInt(outerH) / this.preH)+"px"
+        }
       },
       enter(e){
         let self = this
@@ -83,16 +95,17 @@
       },
       mousemove (e) {
         e.stopPropagation();
+        let outerH = this.outerEle.clientHeight
         var self = this
         this.moveY = e.clientY - this.startY
         this.barStyle.top = (this.offsetY+this.moveY)+'px'
         if(parseInt(this.barStyle.top) < 0){
           this.barStyle.top = '0px'
         }  
-        if(parseInt(this.barStyle.top) > (parseInt(this.data.boxStyle.height)-parseInt(this.barStyle.height))){
-          this.barStyle.top = (parseInt(this.data.boxStyle.height)-parseInt(this.barStyle.height))+'px'
+        if(parseInt(this.barStyle.top) > (outerH-parseInt(this.barStyle.height))){
+          this.barStyle.top = (outerH-parseInt(this.barStyle.height))+'px'
         } 
-        this.preEle.style.top = -(parseInt(this.barStyle.top) * this.preH / parseInt(this.data.boxStyle.height))+'px'
+        this.preEle.style.top = -(parseInt(this.barStyle.top) * this.preH / outerH)+'px'
       },
       mouseup (e) {
         e.stopPropagation();
@@ -103,6 +116,7 @@
         document.removeEventListener('mouseup', self.mouseup)
       },
       mousewheel (e) {
+        let outerH = this.outerEle.clientHeight
         if (e.wheelDelta > 0) { //当滑轮向上滚动时  
             this.barStyle.top = (parseInt(this.barStyle.top) - 10) +'px'
             if(parseInt(this.barStyle.top)<0){
@@ -111,11 +125,11 @@
             }  
         if (e.wheelDelta < 0) { //当滑轮向下滚动时  
           this.barStyle.top = (parseInt(this.barStyle.top) + 10) +'px'
-          if(parseInt(this.barStyle.top) > (parseInt(this.data.boxStyle.height)-parseInt(this.barStyle.height))){
-            this.barStyle.top = (parseInt(this.data.boxStyle.height)-parseInt(this.barStyle.height))+'px'
+          if(parseInt(this.barStyle.top) > (outerH-parseInt(this.barStyle.height))){
+            this.barStyle.top = (outerH-parseInt(this.barStyle.height))+'px'
           } 
         }
-        this.preEle.style.top = -(parseInt(this.barStyle.top) * this.preH / parseInt(this.data.boxStyle.height))+'px'
+        this.preEle.style.top = -(parseInt(this.barStyle.top) * this.preH / outerH)+'px'
       }
       
     },
@@ -125,6 +139,12 @@
           var self = vnode.context
           self.ele = el;
           self.ele.addEventListener('mousedown', self.mousedown)
+        }
+      },
+      outer:{
+        bind: function (el, binding, vnode) {
+          var self = vnode.context
+          self.outerEle = el;
         }
       }
     },

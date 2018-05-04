@@ -1,6 +1,5 @@
 <template>
-    <div>
-      <input type="file" @change="readImg($event)">
+    <div class="clipping-box">
       <div class="cut-box">
 				<div class="out-img-box" :style="outImgstyle">
 					<img :src="imgSrc" class="clip-img" v-show="imgSrc" v-img :style="imgStyle" @load="fitImg">
@@ -11,12 +10,15 @@
 					</base-shape>
 				</div>
       </div>
-      <canvas :width="canvasStyle.width" :height="canvasStyle.height" v-canvas></canvas>      
-      <button @click="commitCanvas($event)">确定</button> 
+			<input type="file" @change="readImg($event)" class="btn-select">
+      <canvas :width="canvasStyle.width" :height="canvasStyle.height" v-canvas class="canvasImg"></canvas>      
+      <button @click="commitCanvas($event)" class="btn-confirm">确定</button>
+			<button @click = "upImg" class="btn-submit">提交</button> 
     </div>      
 </template>
 
 <script>
+	import axios from 'axios'
   import baseShape from "../baseShape.vue"
   export default {
     name: 'imageClipping',
@@ -151,10 +153,10 @@
 				var img = new Image();
 				self.canvasStyle.width = parseInt(imgStyle.width)
 				self.canvasStyle.height = parseInt(imgStyle.height)
+				ctx.clearRect(0,0,self.canvasStyle.width,self.canvasStyle.height);
 				img.onload = function(){
-					ctx.drawImage(img, 0-parseInt(imgStyle.top),0-parseInt(imgStyle.left),imgW,imgH)
-					self.canvasToUrl()
-				};
+					ctx.drawImage(img, 0-parseInt(imgStyle.left),0-parseInt(imgStyle.top),imgW,imgH)
+				}  	
 				img.src = self.img.src
       },
 			canvasToUrl(){
@@ -171,9 +173,25 @@
 
 				// canvas.toDataURL 返回的默认格式就是 image/png
 				let blob=new Blob([ia], {type:"image/png"});
-
+				if(blob.size > 10 *1024){
+					window.alert("图片过大，图片应该小于10K")
+					return 0
+				}	
+				blob = new File([blob],Math.random()+'.png')
 				var fd=new FormData();
 				fd.append('file',blob);
+				return fd;	
+			},
+			upImg(){
+				let self = this;
+				let form = self.canvasToUrl()
+				if(!form){
+					return
+				}
+				axios.post('/file/imgupload', form).then(function (res) {
+					self.$emit('imgUrl',res)
+        }).catch(function (err) {
+        })
 			}
     },
      directives: {
@@ -196,12 +214,20 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
+  .clipping-box{
+		width:100%;
+		height:100%;
+		position:relative;
+	}
   .cut-box{
     width:400px;
     height:400px;
-    position:relative;
+    position:absolute;
 		text-align:center;
+		line-height:normal;
+		top:10px;
+		left:10px;
+		border:1px solid green
   }
 
   .clip-img{
@@ -222,5 +248,34 @@
 		bottom:0;
 		left:0;
 		margin:auto auto;
+	}
+	.canvasImg{
+		position:absolute;
+		top:10px;
+		left:420px;
+	}
+
+	.btn-select{
+		position:absolute;
+		left:10px;
+		top:440px;
+	}
+
+	.btn-select{
+		position:absolute;
+		left:10px;
+		top:440px;
+	}
+
+	.btn-confirm{
+		position:absolute;
+		left:350px;
+		top:440px;
+	}
+
+	.btn-submit{
+		position:absolute;
+		left:600px;
+		top:440px;
 	}
 </style>
