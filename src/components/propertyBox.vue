@@ -22,7 +22,7 @@
       return {}
     },
 
-    create () {
+    created () {
     },
     mounted () {
 

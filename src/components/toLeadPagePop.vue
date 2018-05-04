@@ -33,7 +33,7 @@
       }
     },
 
-    create () {
+    created () {
     },
     mounted () {
 

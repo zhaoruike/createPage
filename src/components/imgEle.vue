@@ -2,7 +2,7 @@
   <base-shape :index="index" :baseData="data">
     <div slot="append" v-on:dblclick="changeProType(1,$event)">
       <img :src="data.address" alt="img" ondragStart="return false">
-      <property-box v-if="propertyType" v-on:closeProType="changeProType" :attribute="data.attribute" @upDataEle="changeEle"></property-box>
+      <property-box v-if="propertyType" @closeProType="changeProType" :attribute="data.attribute" @upDataEle="changeEle"></property-box>
     </div>
   </base-shape>
 </template>
@@ -18,7 +18,7 @@
       }
     },
 
-    create () {
+    created () {
     },
     mounted () {
 
@@ -35,7 +35,7 @@
               position: 'absolute'
             },
             type: 'image',
-            address: 'http://img2.imgtn.bdimg.com/it/u=1864927332,825035894&fm=214&gp=0.jpg'
+            address: 'http://cp.itolddriver.com/images/def.jpg'
           }
         }
       },

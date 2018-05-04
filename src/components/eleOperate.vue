@@ -1,6 +1,8 @@
 <template>
   <div class="ele-parent">
-    <h5>页面名称</h5>
+    <h5>页面高度设置：</h5>
+    <div class="page-height-box"><input v-model="pageHeight" type="text"><button @click="commitHeight">确定</button></div>
+    <h5>页面名称:</h5>
     <h5 v-text="$store.state.pageName"></h5>
     <ul v-for="(val,key,index) in $store.state.data" :key="key" v-if="val.length > 0" class="ele-list">
       <h4 v-text="key"></h4>
@@ -23,10 +25,12 @@
   export default {
     name: 'eleOperate',
     data () {
-      return {}
+      return {
+        pageHeight:""
+      }
     },
-
-    create () {
+    created () {
+      this.pageHeight = parseInt(this.$store.state.pageStyle.height)
     },
     mounted () {
 
@@ -35,8 +39,8 @@
       data: {}
     },
     methods: {
-      del(key, index){
-        this.$store.state.data[key].splice(index, 1)
+      commitHeight(){
+        this.$store.state.pageStyle.height = this.pageHeight + 'px'
       }
     },
     directives: {},
@@ -56,6 +60,7 @@
     background: #e1e1e1;
     z-index: 100;
     box-sizing: border-box;
+    padding-left:5px;
   }
 
   .ele-parent  h4{
@@ -83,6 +88,11 @@
   table td,table th {
     padding: 2px 1px;
     border-bottom: 1px solid #55a532;
+  }
+
+  .page-height-box > input{
+    width:80px;
+    margin-right:20px;
   }
 
 </style>

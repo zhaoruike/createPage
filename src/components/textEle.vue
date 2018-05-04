@@ -1,7 +1,7 @@
 <template>
   <base-shape :baseData="data">
     <div slot="append">
-      <p v-text="data.content" v-on:dblclick="changeProType(1,$event)"></p>
+      <p v-html="data.content" v-on:dblclick="changeProType(1,$event)"></p>
       <property-box v-if="propertyType" v-on:closeProType="changeProType" :attribute="data.attribute" @upDataEle="changeEle"></property-box>
     </div>
   </base-shape>
@@ -18,7 +18,7 @@
       }
     },
 
-    create () {
+    created () {
     },
     mounted () {
 
@@ -55,6 +55,7 @@
       },
       changeEle(msg, e){
         var self = this
+        console.log(msg)
         for (let attr in msg) {
           if (msg.hasOwnProperty(attr)) {
             if (attr == 'style') {

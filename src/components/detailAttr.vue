@@ -2,21 +2,27 @@
   <div class="detail-attr">
     <ul v-for="(val,key,index) in attribute" :key="key" v-if="val.active">
       <li v-for="(v,k,i) in val" :key="k" v-if="v.visible">
-        <span v-text="k+':'"></span><input :type="v.type" v-model="v.value">
+        <span v-text="k+':'"></span><self-input :data="v" :styleObj="v.type=='textarea'?textareaStyle:''"></self-input>
       </li>
     </ul>
   </div>
 </template>
 
 <script>
-  import baseShape from './baseShape.vue'
+  import selfInput from './selfInput.vue'
   export default {
     name: 'detailAttr',
     data () {
-      return {}
+      return {
+        textareaStyle:{
+          minHeight:'200px',
+          width:'300px',
+          overflow:'auto'
+        }
+      }
     },
 
-    create () {
+    created () {
     },
     mounted () {
 
@@ -33,7 +39,7 @@
     },
     methods: {},
     directives: {},
-    components: {baseShape}
+    components: {selfInput}
   }
 </script>
 
