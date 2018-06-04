@@ -1,5 +1,5 @@
 <template>
-  <base-shape :index="index" :baseData="data">
+  <base-shape :index="index" :baseData="data" :select="2">
     <div slot="append" v-on:dblclick="changeProType(1,$event)">
       <img :src="data.address" alt="img" ondragStart="return false">
       <property-box v-if="propertyType" @closeProType="changeProType" :attribute="data.attribute" @upDataEle="changeEle"></property-box>

@@ -177,17 +177,24 @@
 					window.alert("图片过大，图片应该小于10K")
 					return 0
 				}	
-				blob = new File([blob],Math.random()+'.png')
+				// blob = new File([blob],Math.random()+'.png')
 				var fd=new FormData();
 				fd.append('file',blob);
 				return fd;	
 			},
 			upImg(){
 				let self = this;
-				let form = self.canvasToUrl()
+				let form = self.canvasToUrl();
 				if(!form){
 					return
 				}
+				// 进度条监控
+				// let xhr = new XMLHttpRequest()
+				// xhr.onprogress = function(e){
+				// 	console.log(e)
+				// }
+				// xhr.open('POST', '/file/imgupload', true);
+				// xhr.send(form);
 				axios.post('/file/imgupload', form).then(function (res) {
 					self.$emit('imgUrl',res)
         }).catch(function (err) {

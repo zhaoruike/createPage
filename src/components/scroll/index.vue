@@ -117,6 +117,8 @@
       },
       mousewheel (e) {
         let outerH = this.outerEle.clientHeight
+        if(this.barStyle.visibility !== 'visible')
+        return
         if (e.wheelDelta > 0) { //当滑轮向上滚动时  
             this.barStyle.top = (parseInt(this.barStyle.top) - 10) +'px'
             if(parseInt(this.barStyle.top)<0){

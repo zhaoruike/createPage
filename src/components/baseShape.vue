@@ -39,7 +39,14 @@
     created () {
     },
     mounted () {
-
+      let self = this
+      let scroll = self.ele.parentNode.parentNode
+      let top = scroll.offsetTop
+      top ?  top=-top+'px':top='0px'
+      if(self.baseData.attribute){
+        self.baseData.style.top = top
+        self.baseData.attribute.style.top.value = top
+      }
     },
     props: {
       parent: {

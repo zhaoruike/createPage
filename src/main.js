@@ -15,9 +15,9 @@ Vue.use(Vuex)
 
 Vue.config.productionTip = false
 var state = {
-  loginType:false,
-  userInfo:{
-    headImg:''
+  loginType: false,
+  userInfo: {
+    headImg: ''
   },
   pageStyle: { height: '500px' },
   noSelect: "",
@@ -32,6 +32,8 @@ var state = {
   data: {
     imageList: [],
     textList: [],
+    pieChartList: [],
+    histogramList: []
   },
   defEleData: {
     image: {
@@ -106,7 +108,8 @@ var state = {
         position: 'absolute',
         lineHeight: 1.5,
         color: 'rgba(0,0,0,1)',
-        fontFamily: '微软雅黑'
+        fontFamily: '微软雅黑',
+        date: '1991-1-1'
       },
       selectType: { single: false, multiple: false },
       type: 'text',
@@ -152,23 +155,99 @@ var state = {
             value: '微软雅黑',
             type: 'select',
             visible: true,
-            list:[{value:1,name:'微软雅黑'},{value:2,name:'楷体'},{value:3,name:'宋体'}],
-            def:1
+            list: [{ value: 1, name: '微软雅黑' }, { value: 2, name: '楷体' }, { value: 3, name: '宋体' }],
+            def: 1
+          },
+          date: {
+            value: '1990-1-1',
+            type: 'date',
+            visible: true,
+            data: {
+              defDate: new Date().getTime(),
+              format: "yyyy-MM-dd",
+              backValue: ""
+            }
           },
           active: true,
         },
         content: {
           content: {
-            tip:'请输入文字',
+            tip: '请输入文字',
             value: '',
             type: 'textarea',
             visible: true,
-            textarea:''
+            textarea: ''
           },
           active: false,
         }
       }
-    }
+    },
+    pieChart: {
+      name: '饼状图',
+      style: {
+        width: '200px',
+        height: '200px',
+        top: '0px',
+        left: '0px',
+        position: 'absolute',
+        zIndex: 0
+      },
+      selectType: { single: false, multiple: false },
+      type: 'pieChart',
+      attribute: {
+        style: {
+          width: {
+            value: '100px',
+            type: 'text',
+            visible: true
+          },
+          height: {
+            value: '100px',
+            type: 'text',
+            visible: true
+          },
+          top: {
+            value: '0px',
+            type: 'text',
+            visible: false
+          },
+          left: {
+            value: '0px',
+            type: 'text',
+            visible: false
+          },
+          position: {
+            value: 'absolute',
+            type: 'text',
+            visible: false
+          },
+          zIndex: {
+            value: 0,
+            type: 'number',
+            visible: true
+          },
+          active: true,
+        },
+        content: {
+          name: {
+            value: '饼状图',
+            type: 'text',
+            visible: true
+          },
+          classify: {
+            value: 2,
+            type: 'number',
+            visible: true
+          },
+          colorList: {
+            value: '饼状图',
+            type: 'text',
+            visible: true
+          },
+          active: false,
+        }
+      }
+    },
   }
 }
 var mutations = {

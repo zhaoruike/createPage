@@ -98,11 +98,11 @@
       },
       publish(){
         var self = this
-        common.checkToken().then((type)=>{
+        common.checkToken().then((res)=>{
            if(res.data.code == 200){
             axios.post('/drag/publish', {
             pageName: self.$store.state.pageName,
-            html: document.getElementsByClassName('stage')[0].innerHTML,
+            html: document.getElementsByClassName('content-box')[0].innerHTML,
             data: JSON.stringify(self.$store.state.data)
             }).then(function (res) {
             self.$alert(res.data.msg, '提示', {
@@ -113,7 +113,7 @@
             }).catch(function (err) {
             })
           }else{
-            self.$router.push({path:'/loginpage'})
+            self.$router.push({path:'/tologin'})
           }
         })
       },
@@ -127,7 +127,7 @@
             }).catch(function (err) {
             })
           }else{
-            self.$router.push({path:'/loginpage'})
+            self.$router.push({path:'/tologin'})
           }
         })
         
@@ -140,7 +140,7 @@
           if(res.data.code == 200){
             self.type = true
           }else{
-            self.$router.push({path:'/loginpage'})
+            self.$router.push({path:'/tologin'})
           }
         })
       },
@@ -154,7 +154,7 @@
               }).catch(function (err) {
               })
           }else{
-            self.$router.push({path:'/loginpage'})
+            self.$router.push({path:'/tologin'})
           }
         })
        

@@ -30,7 +30,7 @@ router.post('/publish', function (req, res) {
         data = JSON.parse(data)
         if (data[req.body.pageName]) {
             data[req.body.pageName] = req.body.data
-            fs.writeFile('./dist/' + req.body.pageName + '.html', config.htmlPre + req.body.html + config.htmlEnd, function (err) { console.log('写入成功') })
+            fs.writeFile('./product/' + req.body.pageName + '.html', config.htmlPre + req.body.html + config.htmlEnd, function (err) { console.log('写入成功') })
             fs.writeFileSync("data.json", JSON.stringify(data))
             res.send(codeData.publishSuccess)
         }
@@ -51,7 +51,7 @@ router.post('/newpage', function (req, res) {
         data = JSON.parse(data)
         if (!data[req.body.pageName]) {
             data[req.body.pageName] = {}
-            fs.createWriteStream('./dist/' + req.body.name + '.html')
+            fs.createWriteStream('./product/' + req.body.name + '.html')
             fs.writeFileSync("data.json", JSON.stringify(data))
             codeData.success.pageName = req.body.pageName
             res.send(codeData.success)
@@ -64,7 +64,7 @@ router.post('/newpage', function (req, res) {
     if (!data) {
         data = {};
         data[req.body.pageName] = {}
-        fs.createWriteStream('./dist/' + req.body.pageName + '.html')
+        fs.createWriteStream('./product/' + req.body.pageName + '.html')
         fs.writeFileSync("data.json", JSON.stringify(data))
         codeData.success.pageName = req.body.pageName
         res.send(codeData.success)

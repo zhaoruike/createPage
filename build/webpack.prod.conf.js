@@ -14,6 +14,13 @@ const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 const env = process.env.NODE_ENV === 'testing'
   ? require('../config/test.env')
   : require('../config/prod.env')
+  
+//去除map
+if(process.env.NODE_ENV === 'production'){
+  config.build.productionSourceMap = false
+  config.build.devtool = false
+}
+
 
 const webpackConfig = merge(baseWebpackConfig, {
   module: {

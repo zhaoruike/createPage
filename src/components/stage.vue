@@ -3,8 +3,12 @@
     <div class="stage"> 
       <scroll :data="scrollData">
         <div slot="append" style="position:relative;width:100%;height:100%">
+        <!--
+          <self-input :data="inputData"></self-input>
+         -->
           <img-ele v-for="(val,index) in $store.state.data.imageList" :data="val" :key="'image'+index" :index="index"></img-ele>
           <text-ele v-for="(val,index) in $store.state.data.textList" :data="val" :key="'text'+index" :index="index"></text-ele>
+          <pie-chart v-for="(val,index) in $store.state.data.pieChartList" :data="val" :key="'text'+index" :index="index"></pie-chart>
         </div>
       </scroll>
     </div>
@@ -18,6 +22,7 @@
   import editor from './editor.vue'
   import scroll from './scroll/index.vue'
   import imageClipping from './imageClipping/index.vue'
+  import pieChart from './pieChart.vue'
   export default {
     name: 'stage',
     data () {
@@ -31,7 +36,7 @@
           contentStyle:{}
         },
         inputData:{
-          type:"textarea",
+          type:"date",
           data:{
             defDate:new Date().getTime(),
 						format:"yyyy-MM-dd",
@@ -52,7 +57,7 @@
     },
     methods: {},
     directives: {},
-    components: {imgEle, textEle,selfInput,editor,scroll,imageClipping}
+    components: {imgEle, textEle,selfInput,editor,scroll,imageClipping,pieChart}
   }
 </script>
 

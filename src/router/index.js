@@ -1,9 +1,12 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import HelloWorld from '@/components/HelloWorld'
-import index from '@/components/index.vue'
-import login from '@/components/login.vue'
-import userInfo from '@/components/userInfo.vue'
+// import index from '@/components/index.vue'
+// import login from '@/components/login.vue'
+// import userInfo from '@/components/userInfo.vue'
+const index = () => import('@/components/index.vue')
+const login = () => import('@/components/login.vue')
+const userInfo = () => import('@/components/userInfo.vue')
 
 Vue.use(Router)
 
@@ -13,7 +16,7 @@ export default new Router({
     {
       path: '/',
       name: 'index',
-      component: index
+      component:index
     },
     {
       path: '/index',
@@ -21,14 +24,18 @@ export default new Router({
       component: index
     },
     {
-      path: '/loginpage',
+      path: '/tologin',
       name: 'login',
-      component: login
+      component:login
     },
     {
       path: '/userinfo',
       name: 'userinfo',
       component: userInfo
+    },
+    {
+      path:'*',
+      redirect:'/'
     }
   ]
 })

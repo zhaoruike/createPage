@@ -29,7 +29,7 @@
       let self = this
       axios.post('/login/check',{}).then(function(res){
         if(res.data.code !== 200){
-          self.$router.push({path:'/loginpage'})
+          self.$router.push({path:'/tologin'})
         }else{
           self.$store.state.loginType = true
           self.$store.state.userInfo = res.data.data

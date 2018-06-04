@@ -21,7 +21,9 @@
         default(){
           return [
             {icon: 'icon iconfont icon-tupian', name: '图片', type: 'image'},
-            {icon: 'icon iconfont icon-wenzi', name: '文字', type: 'text'}
+            {icon: 'icon iconfont icon-wenzi', name: '文字', type: 'text'},
+            {icon: 'icon iconfont icon-tubiaobingzhuangtu',name:'饼状图',type:'pieChart'},
+            {icon: 'icon iconfont icon-tubiaozhuzhuangtu',name:'柱状图',type:'histogram'},
           ]
         }
       },
@@ -41,6 +43,14 @@
           case 'text':
             var text = common.assign({id:this.$store.state.id},this.$store.state.defEleData.text)
             this.$store.state.data.textList.push(text)
+            break;
+          case 'pieChart':
+            var pieChart = common.assign({id:this.$store.state.id},this.$store.state.defEleData.pieChart)
+            this.$store.state.data.pieChartList.push(pieChart)
+            break;
+          case 'histogram':
+            var histogram = common.assign({id:this.$store.state.id},this.$store.state.defEleData.histogram)
+            this.$store.state.data.histogramList.push(histogram)
             break;
         }
       }

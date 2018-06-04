@@ -1,6 +1,6 @@
 <template>
-  <div class="date-box">
-		<input class="date-def-input" @focus="toSelectDate(true)"  @blur="toSelectDate(false)" type="text">
+  <div class="date-box" v-date>
+		<input class="date-def-input" @focus="toSelectDate(true)"  @blur="toSelectDate(true)" type="text">
 		<div v-text="showDate" class="date-show-box" ></div>
 		<div class="date-select-box" v-show="selectBoxType">
 			<div class="date-select-title"><span class="select-left-box"><span @click="changeYear(-1)"><<</span><span @click="changeMonth(-1)"><</span></span><span v-text="selectYear+'年'"></span><span v-text="selectMonth+'月'"></span><span class="select-right-box"><span @click="changeMonth(1)">></span><span @click="changeYear(-1)">>></span></span></div>
@@ -21,7 +21,8 @@
 	export default {
 		data () {
 			return {
-        showDate:'',
+				ele:null,
+        		showDate:'',
 				selectYear:'',
 				selectMonth:'',
 				selectDay:'',
@@ -32,14 +33,18 @@
 		},
 		created () {
 			var self = this
-      this.showDate = common.formDate(self.data.format,self.data.defDate)
+            this.showDate = common.formDate(self.data.data.format,self.data.data.defDate)
 			this.data.backValue = this.showDate
-			this.selectYear = new Date(self.data.defDate).getFullYear()
-			this.selectMonth = new Date(self.data.defDate).getMonth()+1
+			this.selectYear = new Date(self.data.data.defDate).getFullYear()
+			this.selectMonth = new Date(self.data.data.defDate).getMonth()+1
 			this.drawDate()
 		},
 		mounted () {
-
+			let self = this
+			document.addEventListener('click',function(){
+				self.toSelectDate(false)
+			})
+			
 		},
 		props :{
 			data:{
@@ -96,15 +101,15 @@
 					self.dateList[i].select = false
 				}
 				self.dateList[index].select = true
-				if(self.data.format.indexOf('-')!==-1){
+				if(self.data.data.format.indexOf('-')!==-1){
 					self.showDate = self.selectYear + '-' + self.selectMonth+'-'+self.dateList[index].value
 				}
 
-				if(self.data.format.indexOf('/')!==-1){
+				if(self.data.data.format.indexOf('/')!==-1){
 					self.showDate = self.selectYear + '/' + self.selectMonth+'/'+self.dateList[index].value
 				}
-
-				self.toSelectDate(false)
+				self.data.value = self.showDate
+				self.toSelectDate(true)
 			},
 			changeYear(val){
 				var self = this
@@ -127,7 +132,18 @@
 				} 
 			}
 		},
-	  directives:{},
+	  directives:{
+		  date: {
+				bind: function (el, binding, vnode) {
+					var self = vnode.context
+					self.ele = el;
+					self.ele.addEventListener('click', function(event){
+						let e = event || window.event
+						e.stopPropagation()
+					})
+				}
+      }
+	  },
 		components:{},
 		destoryed (){}	
 	}
