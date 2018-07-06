@@ -13,10 +13,19 @@ let codeData = {
 // 该路由使用的中间件
 router.use(function resetHead(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Max-Age", 60);
     res.header("Access-Control-Allow-Headers", "X-Requested-With");
     res.header("Access-Control-Allow-Methods","PUT,POST,GET,DELETE,OPTIONS");
     res.header("X-Powered-By",' 3.2.1')
     res.header("Content-Type", "application/json;charset=utf-8");
+    res.header("Access-Control-Allow-Credentials",true)
+// Access-Control-Allow-Origin: <origin> | * // 授权的访问源
+// Access-Control-Max-Age: <delta-seconds> // 预检授权的有效期，单位：秒
+// Access-Control-Allow-Credentials: true | false // 是否允许携带 Cookie
+// Access-Control-Allow-Methods: <method>[, <method>]* // 允许的请求动词
+// Access-Control-Allow-Headers: <field-name>[, <field-name>]* // 额外允许携带的请求头
+// Access-Control-Expose-Headers: <field-name>[, <field-name>]* // 额外允许访问的响应头
+
     next();
 });
 // 定义网站主页的路由
