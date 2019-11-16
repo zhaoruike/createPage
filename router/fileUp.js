@@ -3,8 +3,12 @@ let router = express.Router();
 let multer = require('multer');
 let fs  = require('fs')
 
+if(!fs.existsSync('./product')){
+	fs.mkdirSync('./product',0777)
+}
+
 if(!fs.existsSync('./product/images')){
-	fs.mkdir('./product/images')
+	fs.mkdirSync('./product/images',0777)
 }
 let random = Math.random()
 let changeName = function(filename){

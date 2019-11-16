@@ -3,6 +3,7 @@
 > A Vue.js project
 
 ## Build Setup
+## 开发模式
 
 ``` bash
 # install dependencies
@@ -29,3 +30,25 @@ git checkout dev
 ```
 
 For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+
+
+## 开发模式
+
+```BASH
+# 安装包
+npm install
+
+npm run dev
+
+npm run prod
+```
+
+
+## 正式部署
+```BASH
+# 安装包
+npm install
+
+npm run dist
+```
+
